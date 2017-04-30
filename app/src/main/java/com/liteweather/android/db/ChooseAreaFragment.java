@@ -3,6 +3,7 @@ package com.liteweather.android.db;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ import static org.litepal.LitePalApplication.getContext;
  */
 
 public class ChooseAreaFragment extends Fragment {
+    private static final String TAG="ChooseAreaFragment";
     public static final int LEVEL_PROVINCE =0;
     public static final int LEVEL_CITY= 1;
     public static final int LEVEL_COUNTY =2;
@@ -101,6 +103,7 @@ public class ChooseAreaFragment extends Fragment {
             currentLevel=LEVEL_PROVINCE;
         }else{
             String address="http://guolin.tech/api/china";
+            queryFromServer(address,"province");
         }
     }
     private void queryCities(){
@@ -118,7 +121,7 @@ public class ChooseAreaFragment extends Fragment {
 
         }else{
             int provinceCode=selectedProvinc.getProvinceCode();
-            String address="http://guolin.tech/api/china"+provinceCode;
+            String address="http://guolin.tech/api/china/"+provinceCode;
             queryFromServer(address,"city");
         }
     }
@@ -148,6 +151,7 @@ public class ChooseAreaFragment extends Fragment {
             public void onResponse(Call call, Response response)throws IOException{
                 String responseText =response.body().string();
                 boolean result=false;
+                Log.i("ChooseAreaFragment","response="+responseText);
                 if("province".equals(type)){
                     result= Utility.handleProvinceResponse(responseText);
                 }else if("city".equals(type)){
@@ -159,9 +163,10 @@ public class ChooseAreaFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+
                             closeProgressDialog();
                             if("province".equals(type)){
-                                queryCities();
+                                queryProvinces();
                             }else if("city".equals(type)){
                                 queryCities();
                             }else if("county".equals(type)){
@@ -169,6 +174,8 @@ public class ChooseAreaFragment extends Fragment {
                             }
                         }
                     });
+                }else{
+                    closeProgressDialog();
                 }
             }
             public void onFailure(Call call,IOException e){
@@ -191,6 +198,7 @@ public class ChooseAreaFragment extends Fragment {
         progressDialog.show();
     }
     private void closeProgressDialog(){
+        Log.i(TAG,"closeProgressDialog");
         if(progressDialog!=null){
             progressDialog.dismiss();
         }

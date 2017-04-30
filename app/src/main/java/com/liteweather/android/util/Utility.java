@@ -45,6 +45,7 @@ public class Utility {
                     city.setProvinceId(provinceId);
                     city.save();
                 }
+                return true;
             }catch (JSONException e){
                 e.printStackTrace();
             }
@@ -63,6 +64,7 @@ public class Utility {
                     county.setCityId(cityId);
                     county.save();
                 }
+                return true;
             }catch (JSONException e){
                 e.printStackTrace();
             }
