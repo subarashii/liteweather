@@ -25,7 +25,7 @@
             android:layout_marginLeft="10dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="Back"
+            android:background="@drawable/ic_back"
 
             />
 
