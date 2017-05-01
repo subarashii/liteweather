@@ -158,7 +158,6 @@ public class ChooseAreaFragment extends Fragment {
             public void onResponse(Call call, Response response)throws IOException{
                 String responseText =response.body().string();
                 boolean result=false;
-                Log.i("ChooseAreaFragment","response="+responseText);
                 if("province".equals(type)){
                     result= Utility.handleProvinceResponse(responseText);
                 }else if("city".equals(type)){
@@ -205,7 +204,6 @@ public class ChooseAreaFragment extends Fragment {
         progressDialog.show();
     }
     private void closeProgressDialog(){
-        Log.i(TAG,"closeProgressDialog");
         if(progressDialog!=null){
             progressDialog.dismiss();
         }
