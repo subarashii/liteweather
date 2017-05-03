@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -37,10 +38,13 @@ public class WeatherActivity extends AppCompatActivity {
     private TextView comfortText;
     private TextView carWashText;
     private TextView sportText;
+    final String TAG="WeatherActivity";
+    private ImageView picImg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
+
         weatherLayout=(ScrollView)findViewById(R.id.weather_layout);
         titleCity=(TextView)findViewById(R.id.title_city);
         titleUpdateTime=(TextView)findViewById(R.id.title_update_time);
@@ -53,6 +57,7 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText=(TextView)findViewById(R.id.car_wash_text);
         sportText=(TextView)findViewById(R.id.sport_text);
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
+
         String weatherString=prefs.getString("weather",null);
         if(weatherString!=null){
             Weather weather= Utility.handleWeatherResponse(weatherString);
@@ -108,6 +113,7 @@ public class WeatherActivity extends AppCompatActivity {
         degreeText.setText(degree);
         weatherInfoText.setText(weatherInfo);
         forecastLayout.removeAllViews();
+
         for(Forecast forecast:weather.forecastList){
             View view = LayoutInflater.from(this).inflate(R.layout.forecast_item,forecastLayout,false);
             TextView dateText=(TextView)view.findViewById(R.id.date_text);
@@ -131,5 +137,36 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText.setText(carwash);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        Log.i(TAG,"onStart");
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Log.i(TAG,"onResume");
+    }
+    @Override
+    protected void onPause(){
+        super.onPause();
+        Log.i(TAG,"onPause");
+    }
+    @Override
+    protected void onStop(){
+        super.onStop();
+        Log.i(TAG,"onStop");
+    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        Log.i(TAG,"onDestroy");
+    }
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        Log.i(TAG,"onRestart");
     }
 }
