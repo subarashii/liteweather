@@ -50,7 +50,7 @@ public class WeatherActivity extends AppCompatActivity {
     public SwipeRefreshLayout swipeRefresh;
     public DrawerLayout drawerLayout;
     private Button navButton;
-
+    private String tempWeaterId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,20 +83,24 @@ public class WeatherActivity extends AppCompatActivity {
         }
 
         String weatherString=prefs.getString("weather",null);
-        final String weatherId;
+
+
         if(weatherString!=null){
             Weather weather= Utility.handleWeatherResponse(weatherString);
-            weatherId=weather.basic.weatherId;
+            tempWeaterId=weather.basic.weatherId;
             showWeatherInfo(weather);
         }else{
-            weatherId=getIntent().getStringExtra("weather_id");
+
+            tempWeaterId=getIntent().getStringExtra("weather_id");
             weatherLayout.setVisibility(View.INVISIBLE);
-            requestWeather(weatherId);
+            requestWeather(tempWeaterId);
         }
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+
             @Override
             public void onRefresh(){
-                requestWeather(weatherId);
+
+                requestWeather(tempWeaterId);
             }
         });
 
@@ -109,7 +113,8 @@ public class WeatherActivity extends AppCompatActivity {
             }
         });
     }
-    public void requestWeather(final String weatherId){
+    public void requestWeather( final  String weatherId){
+
         String weatherUrl="http://guolin.tech/api/weather?cityid="+weatherId+"&key=f63ce5901ebc4706a02928bad0b597e4";
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
@@ -136,6 +141,7 @@ public class WeatherActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
                             editor.putString("weather",responseText);
                             editor.apply();
+                            tempWeaterId=weather.basic.weatherId;
                             showWeatherInfo(weather);
                         }else{
                             Toast.makeText(WeatherActivity.this,"获取天气信息失败",Toast.LENGTH_SHORT).show();
@@ -145,7 +151,7 @@ public class WeatherActivity extends AppCompatActivity {
                 });
             }
         });
-        loadBingPic();
+        //loadBingPic();
     }
     public void showWeatherInfo(Weather weather){
         String cityName=weather.basic.cityName;
