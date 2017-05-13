@@ -1,5 +1,5 @@
 # liteweather
-it's a lite version wearther report software.no ads,free software.\n
+it's a lite version wearther report software.no ads,free software.  
 代码出自书籍《android 第一行代码》，旨在跟随书中的一个例子熟悉安卓开发方法。\n
 该例子用到的技术如下：\n
 1.litepal关系对象数据库，存储城市列表\n
