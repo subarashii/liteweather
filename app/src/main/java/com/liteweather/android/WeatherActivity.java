@@ -56,9 +56,6 @@ public class WeatherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
-
-        picImg=(ImageView)findViewById(R.id.pic_img);
-
         weatherLayout=(ScrollView)findViewById(R.id.weather_layout);
         titleCity=(TextView)findViewById(R.id.title_city);
         titleUpdateTime=(TextView)findViewById(R.id.title_update_time);
@@ -75,15 +72,7 @@ public class WeatherActivity extends AppCompatActivity {
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
 
-        String bingPic=prefs.getString("bing_pic",null);
-        if(bingPic!=null){
-            Glide.with(this).load(bingPic).into(picImg);
-        }else{
-            loadBingPic();
-        }
-
         String weatherString=prefs.getString("weather",null);
-
 
         if(weatherString!=null){
             Weather weather= Utility.handleWeatherResponse(weatherString);
@@ -132,7 +121,6 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseText =response.body().string();
-                Log.i("WeatherActivity",responseText);
                 final Weather weather=Utility.handleWeatherResponse(responseText);
                 runOnUiThread(new Runnable() {
                     @Override
@@ -188,29 +176,7 @@ public class WeatherActivity extends AppCompatActivity {
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
     }
-    private void loadBingPic(){
-        String requestBingPic="http://guolin.tech/api/bing_pic";
-        HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                final String bingPic=response.body().string();
-                SharedPreferences.Editor editor =PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
-                editor.putString("bing_pic",bingPic);
-                editor.apply();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Glide.with(WeatherActivity.this).load(bingPic).into(picImg);
-                    }
-                });
-            }
-        });
-    }
 
     @Override
     protected void onStart(){

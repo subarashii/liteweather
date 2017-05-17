@@ -1,10 +1,14 @@
 package com.liteweather.android.db;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.liteweather.android.AreaListActivity;
 import com.liteweather.android.MainActivity;
 import com.liteweather.android.R;
 import com.liteweather.android.WeatherActivity;
@@ -80,7 +85,7 @@ public class ChooseAreaFragment extends Fragment {
                 }else if(currentLevel==LEVEL_COUNTY){
                     String weatherId=countyList.get(position).getWeatherId();
                     if(getActivity() instanceof MainActivity){
-                        Intent intent=new Intent(getActivity(), WeatherActivity.class);
+                        Intent intent=new Intent(getActivity(), AreaListActivity.class);
                         intent.putExtra("weather_id",weatherId);
                         startActivity(intent);
                         getActivity().finish();
@@ -89,6 +94,19 @@ public class ChooseAreaFragment extends Fragment {
                         activity.drawerLayout.closeDrawers();
                         activity.swipeRefresh.setRefreshing(true);
                         activity.requestWeather(weatherId);
+                    }else if(getActivity() instanceof AreaListActivity){
+                        SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(getActivity());
+                        String weatherid_list=prefs.getString("weatherid_list",null);
+                        if(!weatherid_list.contains(weatherId)){
+                            weatherid_list=weatherid_list+","+weatherId;
+                            SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
+                            editor.putString("weatherid_list",weatherid_list);
+                            editor.apply();
+                            AreaListActivity activity=(AreaListActivity)getActivity();
+                            activity.requestWeather(weatherid_list);
+                            Log.i(TAG,weatherid_list);
+                        }
+
                     }
 
                 }
