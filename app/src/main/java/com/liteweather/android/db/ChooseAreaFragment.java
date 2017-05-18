@@ -86,7 +86,7 @@ public class ChooseAreaFragment extends Fragment {
                     String weatherId=countyList.get(position).getWeatherId();
                     if(getActivity() instanceof MainActivity){
                         Intent intent=new Intent(getActivity(), AreaListActivity.class);
-                        intent.putExtra("weather_id",weatherId);
+                        intent.putExtra("weatherid_list",weatherId);
                         startActivity(intent);
                         getActivity().finish();
                     }else if(getActivity() instanceof WeatherActivity){
@@ -97,14 +97,15 @@ public class ChooseAreaFragment extends Fragment {
                     }else if(getActivity() instanceof AreaListActivity){
                         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(getActivity());
                         String weatherid_list=prefs.getString("weatherid_list",null);
+
                         if(!weatherid_list.contains(weatherId)){
                             weatherid_list=weatherid_list+","+weatherId;
                             SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
                             editor.putString("weatherid_list",weatherid_list);
                             editor.apply();
                             AreaListActivity activity=(AreaListActivity)getActivity();
-                            activity.requestWeather(weatherid_list);
-                            Log.i(TAG,weatherid_list);
+                            activity.requestWeather(weatherId);
+
                         }
 
                     }
