@@ -19,7 +19,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".WeatherActivity" />
-        <activity android:name=".arealist" />
         <activity android:name=".AreaListActivity"></activity>
     </application>
 

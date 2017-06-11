@@ -104,7 +104,7 @@ public class ChooseAreaFragment extends Fragment {
                             editor.putString("weatherid_list",weatherid_list);
                             editor.apply();
                             AreaListActivity activity=(AreaListActivity)getActivity();
-                            activity.requestWeather(weatherId);
+                            activity.requestWeatherforListView(weatherid_list);
 
                         }
 

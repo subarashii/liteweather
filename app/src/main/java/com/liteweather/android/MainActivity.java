@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         if(preferences.getString("weatherid_list",null)!=null){
             Intent intent=new Intent(this,AreaListActivity.class);
             startActivity(intent);
-            finish();
+            //finish();
         }
     }
 
